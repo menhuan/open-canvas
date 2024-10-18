@@ -1,4 +1,3 @@
-# 使用 node 基础镜像
 FROM node:20-slim
 
 # 设置工作目录
@@ -11,17 +10,17 @@ RUN apt-get update && apt-get install -y \
     g++ \
     && rm -rf /var/lib/apt/lists/*
 
-# 复制 package.json
-COPY package.json ./
+# 复制 package.json 和 yarn.lock
+COPY package.json yarn.lock ./
 
-# 安装依赖（添加 --legacy-peer-deps 标志）
-RUN npm install --legacy-peer-deps
+# 安装依赖（yarn 没有 --legacy-peer-deps，但 yarn 会自动处理依赖冲突）
+RUN yarn install
 
 # 复制源代码
 COPY . .
 
 # 构建应用
-RUN npm run build
+RUN yarn build
 
 # 暴露端口
 EXPOSE 3000
@@ -32,4 +31,4 @@ ENV HOSTNAME "0.0.0.0"
 ENV NODE_ENV production
 
 # 启动应用
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
