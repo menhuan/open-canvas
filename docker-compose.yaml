@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   frontend:
+    image: krccr.ccs.tencentyun.com/coin/open_canvas:laster
     build:
       context: .
       dockerfile: Dockerfile
